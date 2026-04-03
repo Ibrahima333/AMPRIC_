@@ -12,6 +12,7 @@ mail = Mail()
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
+app.config["SEND_FILE_MAX_AGE_DEFAULT"] = 60 * 60 * 24 * 30 #garde les fichier en cache pendant 30 jours
 #connection a mysql
 def mysql():
     try:
@@ -134,4 +135,5 @@ def dashboard():
     print(utilisateurs)
     return render_template("dashbord.html", users=utilisateurs, columns=colonnes)
     
- 
+if __name__ == "__main__":
+    app.run(debug=True)

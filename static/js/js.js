@@ -1,9 +1,11 @@
 let logo = document.querySelector(".logo")
 let navar = document.querySelector(".navbar")
 window.addEventListener("scroll",()=>{
-    if  (window.scrollY == 0){
+    if (!logo || !navar) {
+        return;
+    }
 
-        console.log(window.scrollY)
+    if  (window.scrollY == 0){
         logo.classList.remove("logo-lg");
         logo.classList.add("logo-sn");
         navar.classList.add("nav-sn");
@@ -16,28 +18,57 @@ window.addEventListener("scroll",()=>{
         navar.classList.add("nav-lg");
         navar.classList.remove("nav-sn")
     }
-})
+}, { passive: true })
 
 // slider image ici
 
-let section1 = document.querySelector(".section1")
+const section1 = document.querySelector(".section1");
+const sliderStage = document.querySelector(".section1-slider");
+const sliderLayers = document.querySelectorAll(".section1-slide");
+const sliderDots = document.querySelectorAll(".slider-dot");
 
 const liste_image = [
     "/static/image/img1.jpeg",
     "/static/image/img4.jpg",
     "/static/image/img6.jpg"
 ];
-let index = 0 
-setInterval(()=>{
-    index = (index + 1) % liste_image.length;
-    section1.style.backgroundImage =`url(${liste_image[index]})`;  
- },6000)
+let index = 0;
+let activeLayer = 0;
+
+if (section1 && sliderStage && sliderLayers.length === 2) {
+    sliderLayers[0].style.backgroundImage = `url(${liste_image[0]})`;
+    sliderLayers[1].style.backgroundImage = `url(${liste_image[1]})`;
+    section1.style.backgroundImage = "none";
+
+    const updateDots = () => {
+        sliderDots.forEach((dot, dotIndex) => {
+            dot.classList.toggle("is-active", dotIndex === index);
+        });
+    };
+
+    const switchSlide = () => {
+        index = (index + 1) % liste_image.length;
+        const nextLayer = activeLayer === 0 ? 1 : 0;
+
+        sliderLayers[nextLayer].style.backgroundImage = `url(${liste_image[index]})`;
+        sliderLayers[nextLayer].classList.add("is-active");
+        sliderLayers[activeLayer].classList.remove("is-active");
+
+        activeLayer = nextLayer;
+        updateDots();
+    };
+
+    updateDots();
+    setInterval(switchSlide, 5500);
+}
 
 
 // partie du popup 
 const button_popup = document.querySelector(".overlay-popup");
 let active_popup = ()=>{
-    button_popup.classList.toggle("active-popup")
+    if (button_popup) {
+        button_popup.classList.toggle("active-popup")
+    }
 }
 
 // le popup reste active s'il ya un message erreur et aussi gerer le temp d'affichage
@@ -68,12 +99,16 @@ const input_tel = document.getElementById("phone")
 const erreur_tel = document.querySelector(".erreur_tel")
 const btn_submit = document.querySelector(".submit-btn")
 
-btn_submit.disabled = true;
+if (btn_submit) {
+    btn_submit.disabled = true;
+}
 
-input_tel.addEventListener("input",()=>{
-const tel = input_tel.value.trim();
-if (input_tel.value === ""){ erreur_tel.style.opacity = "0"; btn_submit.disabled = true;}
-else if (!valide_numero(tel)){ erreur_tel.style.opacity = "1";  btn_submit.disabled = true; }
-else {  erreur_tel.style.opacity = "0";; btn_submit.disabled = false;}
+if (input_tel && erreur_tel && btn_submit) {
+    input_tel.addEventListener("input",()=>{
+    const tel = input_tel.value.trim();
+    if (input_tel.value === ""){ erreur_tel.style.opacity = "0"; btn_submit.disabled = true;}
+    else if (!valide_numero(tel)){ erreur_tel.style.opacity = "1";  btn_submit.disabled = true; }
+    else {  erreur_tel.style.opacity = "0"; btn_submit.disabled = false;}
 
-})
+    })
+}
