@@ -1,0 +1,127 @@
+:root {
+  --bg: #eef4ea;
+  --card: #ffffff;
+  --text: #18322a;
+  --muted: #5e7067;
+  --line: #d7e0d4;
+  --primary: #23684b;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: var(--text);
+  background:
+    radial-gradient(circle at top left, rgba(137, 196, 92, 0.18), transparent 28%),
+    linear-gradient(180deg, #edf4e6 0%, #f8f9f4 100%);
+}
+
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.login-card {
+  width: min(100%, 420px);
+  padding: 32px 28px;
+  border-radius: 20px;
+  background: var(--card);
+  box-shadow: 0 18px 42px rgba(17, 42, 29, 0.1);
+}
+
+.kicker {
+  margin: 0 0 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 12px;
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.login-card h1 {
+  margin: 0 0 10px;
+  font-size: 1.9rem;
+}
+
+.intro {
+  margin: 0 0 22px;
+  color: var(--muted);
+}
+
+.login-form {
+  display: grid;
+  gap: 16px;
+}
+
+.login-form label {
+  display: grid;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.login-form input {
+  width: 100%;
+  min-height: 46px;
+  padding: 0 14px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: #f9fbf8;
+  color: var(--text);
+  font: inherit;
+}
+
+.login-form input:focus {
+  outline: 2px solid rgba(35, 104, 75, 0.14);
+  border-color: var(--primary);
+}
+
+.submit-btn {
+  min-height: 46px;
+  border: 0;
+  border-radius: 12px;
+  background: var(--primary);
+  color: white;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.alerts {
+  position: fixed;
+  top: 100px;
+  right: 20px;
+  z-index: 9999;
+}
+
+.success,
+.error {
+  padding: 12px 25px;
+  border-radius: 8px;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+.success {
+  background: #28a745;
+  color: white;
+}
+
+.error {
+  background: #fbe8e8;
+  color: #8f2e2e;
+  border-left: 5px solid #d9534f;
+}
+
+.success p,
+.error p {
+  margin: 0;
+}

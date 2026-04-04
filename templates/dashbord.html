@@ -13,7 +13,12 @@
         <p class="eyebrow">Administration</p>
         <h1>Tableau de bord AMPRIC</h1>
       </div>
-      <div class="user">Gestion des utilisateurs</div>
+      <div class="topbar-actions">
+        <div class="user">Gestion des utilisateurs</div>
+        <form method="post" action="{{ url_for('dashboard_logout') }}">
+          <button type="submit" class="btn btn-secondary topbar-btn">Deconnexion</button>
+        </form>
+      </div>
     </div>
   </header>
 

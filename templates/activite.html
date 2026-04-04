@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block title %}Activité - AMPRIC{% endblock %}
+
+{% block style %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/activite.css') }}">
+<link rel="preload" as="image" href="{{ url_for('static', filename='image/banner_contact.jpg') }}">
+{% endblock %}
+
+{% block content %}
+<section class="activity-hero container-fluid">
+  <div class="activity-hero-inner">
+    <p class="activity-kicker">Vie associative</p>
+    <h1>Nos activités</h1>
+    <p>
+      L’AMPRIC mène des actions concrètes pour informer, soutenir et rapprocher les personnes atteintes
+      de polyarthrite rhumatoïde et de rhumatismes inflammatoires chroniques.
+    </p>
+  </div>
+</section>
+
+<section class="activity-section container">
+  <div class="activity-grid">
+    <article class="activity-card">
+      <h2>Sensibilisation</h2>
+      <p>
+        Organisation de campagnes d’information, d’échanges communautaires et de prises de parole
+        pour mieux faire connaître la maladie et ses impacts au quotidien.
+      </p>
+    </article>
+
+    <article class="activity-card">
+      <h2>Accompagnement</h2>
+      <p>
+        Mise à disposition d’un espace d’écoute et d’orientation pour aider les malades et leurs proches
+        à mieux vivre avec la maladie et à trouver les ressources adaptées.
+      </p>
+    </article>
+
+    <article class="activity-card">
+      <h2>Rencontres</h2>
+      <p>
+        Animation de rencontres, causeries et moments de partage pour créer du lien entre les personnes
+        concernées, les familles et les professionnels de santé.
+      </p>
+    </article>
+  </div>
+</section>
+
+<section class="activity-highlight container">
+  <div class="highlight-media">
+    <img src="{{ url_for('static', filename='image/a4.JPG') }}" alt="Activités de sensibilisation de l'AMPRIC" width="720" height="520" loading="eager" fetchpriority="high" decoding="async">
+  </div>
+  <div class="highlight-text">
+    <p class="activity-kicker">Actions sur le terrain</p>
+    <h2>Des initiatives proches des besoins réels</h2>
+    <p>
+      À travers ses activités, l’AMPRIC cherche à renforcer l’information, à rompre l’isolement et à
+      favoriser une meilleure orientation des patients. Chaque action vise à améliorer la qualité de vie,
+      encourager le dialogue et développer une communauté plus solidaire.
+    </p>
+ 
+  </div>
+
+  <div class="highlight-media">
+    <img src="{{ url_for('static', filename='image/a1.JPG') }}" alt="Activités de sensibilisation de l'AMPRIC" width="720" height="520" loading="eager" fetchpriority="high" decoding="async">
+  </div>
+  <div class="highlight-text">
+    <p class="activity-kicker">Rencontre institutionnelle</p>
+    <h2>Échange avec la marraine de l’association</h2>
+    <p>
+      Cette rencontre avec la marraine de l’association a été un moment fort de dialogue, d’écoute et
+      de partage autour des missions de l’AMPRIC. Elle illustre la volonté de l’association de renforcer
+      ses liens avec ses soutiens, de porter la voix des malades et de donner plus de visibilité à ses actions.
+    </p>
+ 
+  </div>
+</section>
+{% endblock %}

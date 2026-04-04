@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Connexion Dashboard - AMPRIC</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard_login.css') }}">
+</head>
+<body>
+  <main class="login-page">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <section class="alerts">
+          {% for category, message in messages %}
+            <div class="{{ category }}">
+              <p>{{ message }}</p>
+            </div>
+          {% endfor %}
+        </section>
+      {% endif %}
+    {% endwith %}
+
+    <section class="login-card">
+      <p class="kicker">Espace sécurisé</p>
+      <h1>Connexion au dashboard</h1>
+      <p class="intro">Accès réservé à l’administration AMPRIC.</p>
+
+      <form method="post" class="login-form">
+        <input type="hidden" name="next" value="{{ next_url }}">
+
+        <label>
+          Nom d'utilisateur
+          <input type="text" name="username" required autocomplete="username">
+        </label>
+
+        <label>
+          Mot de passe
+          <input type="password" name="password" required autocomplete="current-password">
+        </label>
+
+        <button type="submit" class="submit-btn">Se connecter</button>
+      </form>
+    </section>
+  </main>
+</body>
+</html>

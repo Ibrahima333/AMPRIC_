@@ -1,16 +1,35 @@
-from flask import Flask ,render_template , request,url_for,redirect,flash
+from flask import Flask ,render_template , request,url_for,redirect,flash,session
 from flask_mail import Mail, Message
 import pymysql
 from dotenv import load_dotenv
 import os
 from math import ceil
+from functools import wraps
 
 # Charger les variables d'environnement
 load_dotenv()
 mail = Mail()
 
 app = Flask(__name__)
-app.secret_key = os.urandom(24)
+app.secret_key = os.getenv("SECRET_KEY", os.urandom(24))
+
+
+def get_admin_credentials():
+    return {
+        "username": os.getenv("ADMIN_USERNAME"),
+        "password": os.getenv("ADMIN_PASSWORD"),
+    }
+
+
+def login_required(view_func):
+    @wraps(view_func)
+    def wrapped_view(*args, **kwargs):
+        if not session.get("dashboard_authenticated"):
+            flash("Veuillez vous connecter pour accéder au dashboard.", "error")
+            return redirect(url_for("dashboard_login", next=request.path))
+        return view_func(*args, **kwargs)
+
+    return wrapped_view
 #connection a mysql
 def mysql():
     try:
@@ -109,6 +128,11 @@ def objectifs():
     return render_template("objectifs.html")
 
 
+@app.route('/activite')
+def activite():
+    return render_template("activite.html")
+
+
 # route pour la page de contact
 @app.route('/contact',methods=["POST","GET"])
 def contact():
@@ -119,15 +143,52 @@ def contact():
         
         msg = Message(
             subject=f"Message de {nom}",
-            sender=email,
-            recipients=["keitasoryibrahima1234@gmail.com"]
+            sender=app.config['MAIL_USERNAME'],
+            recipients=["contactampric@gmail.com"]
         )
-        msg.body = f"Message de {nom} : {message}"
+        msg.body = f"""
+                    Nom: {nom}
+                    Email: {email}
+
+                    Message:
+                    {message}
+                    """
         mail.send(msg)
         flash("Votre message a été envoyé avec succès.", "success")
     return render_template("contact.html") 
 
+
+@app.route('/admin/login', methods=["GET", "POST"])
+def dashboard_login():
+    if session.get("dashboard_authenticated"):
+        return redirect(url_for("dashboard"))
+
+    next_url = request.args.get("next", "")
+    if request.method == "POST":
+        username = request.form.get("username", "").strip()
+        password = request.form.get("password", "").strip()
+        next_url = request.form.get("next", "")
+        credentials = get_admin_credentials()
+
+        if username == credentials["username"] and password == credentials["password"]:
+            session["dashboard_authenticated"] = True
+            return redirect(next_url or url_for("dashboard"))
+
+        flash("Identifiants incorrects.", "error")
+
+    return render_template("dashboard_login.html", next_url=next_url)
+
+
+@app.route('/admin/logout', methods=["POST"])
+@login_required
+def dashboard_logout():
+    session.pop("dashboard_authenticated", None)
+    flash("Déconnexion réussie.", "success")
+    return redirect(url_for("dashboard_login"))
+
+
 @app.route('/dashboard', methods=["GET", "POST"])
+@login_required
 def dashboard():
     if request.method == "POST":
         nom = request.form.get("nom", "").strip()
@@ -229,6 +290,7 @@ def dashboard():
 
 
 @app.route('/dashboard/<int:user_id>/update', methods=["POST"])
+@login_required
 def update_user(user_id):
     nom = request.form.get("nom", "").strip()
     prenom = request.form.get("prenom", "").strip()
@@ -266,6 +328,7 @@ def update_user(user_id):
 
 
 @app.route('/dashboard/<int:user_id>/delete', methods=["POST"])
+@login_required
 def delete_user(user_id):
     page = request.form.get("page", 1, type=int)
     search = request.form.get("search", "").strip()

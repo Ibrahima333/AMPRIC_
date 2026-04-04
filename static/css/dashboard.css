@@ -63,6 +63,20 @@ body {
   font-size: 14px;
 }
 
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.topbar-actions form {
+  margin: 0;
+}
+
+.topbar-btn {
+  min-height: 38px;
+}
+
 .page {
   max-width: 1240px;
   margin: 0 auto;
@@ -416,6 +430,11 @@ tbody tr:hover {
   .tb-inner,
   .panel-head,
   .pagination {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .topbar-actions {
     flex-direction: column;
     align-items: stretch;
   }
