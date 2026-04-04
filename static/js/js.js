@@ -34,6 +34,26 @@ const liste_image = [
 ];
 let index = 0;
 let activeLayer = 0;
+let sliderIntervalId = null;
+let switchSlide = null;
+let updateDots = null;
+
+const startSlider = () => {
+    if (sliderIntervalId || !section1 || !sliderStage || sliderLayers.length !== 2 || !switchSlide) {
+        return;
+    }
+
+    sliderIntervalId = window.setInterval(switchSlide, 5500);
+};
+
+const stopSlider = () => {
+    if (!sliderIntervalId) {
+        return;
+    }
+
+    window.clearInterval(sliderIntervalId);
+    sliderIntervalId = null;
+};
 
 if (section1 && sliderStage && sliderLayers.length === 2) {
     sliderLayers[0].style.backgroundImage = `url(${liste_image[0]})`;
@@ -46,13 +66,13 @@ if (section1 && sliderStage && sliderLayers.length === 2) {
         });
     };
 
-    const updateDots = () => {
+    updateDots = () => {
         sliderDots.forEach((dot, dotIndex) => {
             dot.classList.toggle("is-active", dotIndex === index);
         });
     };
 
-    const switchSlide = () => {
+    switchSlide = () => {
         index = (index + 1) % liste_image.length;
         const nextLayer = activeLayer === 0 ? 1 : 0;
 
@@ -72,22 +92,39 @@ if (section1 && sliderStage && sliderLayers.length === 2) {
         window.setTimeout(warmNextSlides, 1200);
     }
 
-    setInterval(switchSlide, 5500);
+    startSlider();
 }
 
 
 // partie du popup 
 const button_popup = document.querySelector(".overlay-popup");
-let active_popup = ()=>{
-    if (button_popup) {
-        button_popup.classList.toggle("active-popup")
+const togglePopupState = (isOpen) => {
+    if (!button_popup) {
+        return;
     }
-}
+
+    button_popup.classList.toggle("active-popup", isOpen);
+    document.body.classList.toggle("popup-open", isOpen);
+
+    if (isOpen) {
+        stopSlider();
+    } else {
+        startSlider();
+    }
+};
+
+const active_popup = ()=>{
+    if (button_popup) {
+        togglePopupState(!button_popup.classList.contains("active-popup"));
+    }
+};
+
+window.active_popup = active_popup;
 
 // le popup reste active s'il ya un message erreur et aussi gerer le temp d'affichage
 const erreur = document.querySelector(".erreur") ;
 if(erreur){
-    button_popup.classList.add("active-popup")
+    togglePopupState(true);
     setTimeout(()=>{
         erreur.style.opacity= "0"
     },4000)

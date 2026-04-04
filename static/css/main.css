@@ -149,10 +149,31 @@ transition: step-end;
   align-items: center;
   justify-content: center;
   z-index: 999;
+  contain: layout paint;
 }
 
 .overlay-popup.active-popup{
   display: flex !important;
+  isolation: isolate;
+  will-change: opacity;
+  transform: translateZ(0);
+}
+
+body.popup-open{
+  overflow: hidden;
+}
+
+body.popup-open .section1-slide,
+body.popup-open .slider-dot,
+body.popup-open .button,
+body.popup-open .navbar,
+body.popup-open .logo{
+  transition: none !important;
+  animation: none !important;
+}
+
+body.popup-open .section1-slide{
+  will-change: auto;
 }
  
 .content-popup{
@@ -164,7 +185,11 @@ transition: step-end;
   border-radius: 10px;
   background-image: url("img/logo.jpeg");
   background-position: 10px;
-background-size: contain;
+  background-size: contain;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  will-change: transform;
+  contain: layout paint style;
  }
 
  .content-popup h3{
@@ -188,6 +213,7 @@ background-size: contain;
   display: flex;
   flex-direction: column;
   gap: 10px;
+  contain: layout paint style;
 }
 
 input, textarea{

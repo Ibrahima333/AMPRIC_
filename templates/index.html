@@ -55,19 +55,19 @@
           <form id="form-association" action="{{url_for('home')}}" method="POST">
                {%if erreur%} <p class="erreur"> {{erreur}}</p> {%endif%}
               <label>Nom </label>
-              <input type="text" name="nom" required>
+              <input type="text" name="nom" required autocomplete="off" spellcheck="false">
     
               <label>Prenom </label>
-              <input type="text" name="prenom" required>
+              <input type="text" name="prenom" required autocomplete="off" spellcheck="false">
     
               <label>Email</label>
-              <input type="email" name="email" required>
+              <input type="email" name="email" required autocomplete="off" spellcheck="false">
     
               <label>Téléphone <span class="erreur_tel">(Le numero doit contenir 7 chiffres, commençant par 7, 8 ou 9.)</span></label>
-              <input id="phone" type="number" name="tel">
+              <input id="phone" type="number" name="tel" autocomplete="off" spellcheck="false">
     
               <label>Message</label>
-              <textarea name="message" rows="2"  maxlength="200" ></textarea>
+              <textarea name="message" rows="2" maxlength="200" autocomplete="off" spellcheck="false"></textarea>
     
               <button type="submit" class="submit-btn">Envoyer</button>
           </form>

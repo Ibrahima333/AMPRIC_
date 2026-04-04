@@ -4,6 +4,8 @@
 <!-- lien pour le css de la page d'objectifs -->
 {%block style %}
 <link rel="stylesheet" href="{{url_for('static', filename='css/objectif.css')}}">
+<link rel="preload" as="image" href="{{ url_for('static', filename='image/banner_contact.jpg') }}">
+<link rel="preload" as="image" href="{{ url_for('static', filename='image/informer.jpg') }}">
 {% endblock %}
 
 
@@ -21,7 +23,7 @@
 <div class="container-fluid">
 
     <div class="goal1">
-        <div class="img-goal1"> <img src="{{url_for('static', filename='image/informer.jpg')}}" alt="Illustration informer et sensibiliser" width="420" height="280" loading="lazy" decoding="async"></div>
+        <div class="img-goal1"> <img src="{{url_for('static', filename='image/informer.jpg')}}" alt="Illustration informer et sensibiliser" width="420" height="280" loading="eager" fetchpriority="high" decoding="async"></div>
         <div class="text">
             <h2>Objectif 1 : Informer et sensibiliser</h2>
             <p>
@@ -34,7 +36,7 @@
     
     </div>
     <div class="goal1">
-        <div class="text">`
+        <div class="text">
             <h2>Objectif 2 : Écouter, soutenir et orienter</h2>
             <p>Offrir un espace d’écoute et de soutien moral aux personnes atteintes, les accompagner dans leurs démarches et les orienter vers les structures, professionnels de santé et ressources adaptées à leurs besoins.
                 L’AMPRIC vise à créer une communauté solidaire où les malades peuvent partager leurs expériences, trouver du réconfort et bénéficier d’un soutien psychologique face aux défis de la maladie.
