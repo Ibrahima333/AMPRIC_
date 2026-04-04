@@ -121,7 +121,7 @@ transition: step-end;
  .section1-overlay{
   z-index: 1;
   background:
-    linear-gradient(90deg, rgba(3, 18, 25, 0.50) 0%, rgba(3, 18, 25, 0.62) 38%, rgba(3, 18, 25, 0.3) 100%),
+    linear-gradient(90deg, rgba(3, 18, 25, 0.0) 0%, rgba(3, 18, 25, 0.3) 38%, rgba(3, 18, 25, 0.3) 100%),
     linear-gradient(180deg, rgba(0, 0, 0, 0.12) 0%, rgba(0, 0, 0, 0.35) 100%);
  }
 
@@ -829,6 +829,16 @@ background-size: cover;
 }
 .social svg{ width:20px; height:20px; display:block; }
 .social:hover{ transform: translateY(-4px); background: rgba(136,234,8,0.12); color: var(--brand-accent, #88ea08); }
+
+.section2,
+.section3,
+.section4,
+.section5,
+.section6,
+.footer{
+  content-visibility: auto;
+  contain-intrinsic-size: 800px;
+}
 
 /* responsive */
 @media (max-width: 900px){

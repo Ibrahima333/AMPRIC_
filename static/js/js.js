@@ -37,8 +37,14 @@ let activeLayer = 0;
 
 if (section1 && sliderStage && sliderLayers.length === 2) {
     sliderLayers[0].style.backgroundImage = `url(${liste_image[0]})`;
-    sliderLayers[1].style.backgroundImage = `url(${liste_image[1]})`;
     section1.style.backgroundImage = "none";
+
+    const warmNextSlides = () => {
+        liste_image.slice(1).forEach((imageUrl) => {
+            const img = new Image();
+            img.src = imageUrl;
+        });
+    };
 
     const updateDots = () => {
         sliderDots.forEach((dot, dotIndex) => {
@@ -59,6 +65,13 @@ if (section1 && sliderStage && sliderLayers.length === 2) {
     };
 
     updateDots();
+
+    if ("requestIdleCallback" in window) {
+        window.requestIdleCallback(warmNextSlides, { timeout: 1800 });
+    } else {
+        window.setTimeout(warmNextSlides, 1200);
+    }
+
     setInterval(switchSlide, 5500);
 }
 

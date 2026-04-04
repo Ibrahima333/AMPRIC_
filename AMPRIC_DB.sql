@@ -13,11 +13,12 @@ insert INTO utilisateurs(nom,prenom,telephone,email) VALUES ("sory","keita","786
 select * from utilisateurs ;
 DELETE FROM utilisateurs ;
 
- UPDATE utilisateurs 
+UPDATE utilisateurs 
 SET date_inscription = CURRENT_DATE
 WHERE date_inscription IS NULL;
 
 ALTER TABLE utilisateurs 
 ADD COLUMN date_inscription DATETIME DEFAULT CURRENT_TIMESTAMP;
 
+show COLUMNS FROM utilisateurs;
  

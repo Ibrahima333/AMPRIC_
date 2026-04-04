@@ -3,60 +3,203 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Dashboard — AMPRIC</title>
+  <title>Dashboard - AMPRIC</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
 </head>
 <body>
   <header class="topbar">
     <div class="tb-inner">
-      <h1>AMPRIC — Dashboard</h1>
-      <div class="user">Bonjour, Admin</div>
+      <div>
+        <p class="eyebrow">Administration</p>
+        <h1>Tableau de bord AMPRIC</h1>
+      </div>
+      <div class="user">Gestion des utilisateurs</div>
     </div>
   </header>
 
-  <div class="layout">
-    <nav class="sidebar" aria-label="Navigation">
-      <ul>
-        <li><a href="#">Overview</a></li>
-        <li><a href="#">Membres</a></li>
-        <li><a href="#">Messages</a></li>
-        <li><a href="#">Ressources</a></li>
-        <li><a href="#">Paramètres</a></li>
-      </ul>
-    </nav>
+  <main class="page">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <section class="alerts">
+          {% for category, message in messages %}
+            <div class="{{ category }}">
+              <p>{{ message }}</p>
+            </div>
+          {% endfor %}
+        </section>
+      {% endif %}
+    {% endwith %}
 
-    <main class="main">
-      <section class="cards" aria-label="Statistiques rapides">
-        <div class="card">
-          <h3>Utilisateurs</h3>
-          <p class="big">1 234</p>
+    <div class="dashboard-layout {{ 'with-sidebar' if editing_user else '' }}" id="dashboardLayout">
+      <aside class="sidebar panel {{ 'is-open' if editing_user else '' }}" id="sidebarForm">
+        <div class="panel-head sidebar-head">
+          <div>
+            <p class="section-kicker">Sidebar</p>
+            <h2>{{ 'Mettre a jour une donnee' if editing_user else 'Ajouter une donnee' }}</h2>
+          </div>
+          <div class="sidebar-actions">
+            <button class="btn btn-secondary sidebar-close" type="button" id="closeSidebar">Fermer</button>
+            {% if editing_user %}
+              <a class="btn btn-secondary" href="{{ url_for('dashboard', page=current_page) }}">Annuler</a>
+            {% endif %}
+          </div>
         </div>
-        <div class="card">
-          <h3>Inscriptions</h3>
-          <p class="big">24</p>
+
+        <form
+          class="dashboard-form sidebar-form"
+          method="post"
+          action="{{ url_for('update_user', user_id=editing_user.id) if editing_user else url_for('dashboard') }}"
+        >
+          {% if editing_user %}
+            <input type="hidden" name="page" value="{{ current_page }}">
+          {% endif %}
+          <input type="hidden" name="search" value="{{ search }}">
+
+          <label>
+            Nom
+            <input type="text" name="nom" value="{{ editing_user.nom if editing_user else '' }}" required>
+          </label>
+
+          <label>
+            Prenom
+            <input type="text" name="prenom" value="{{ editing_user.prenom if editing_user else '' }}" required>
+          </label>
+
+          <label>
+            Telephone
+            <input type="text" name="telephone" value="{{ editing_user.telephone if editing_user else '' }}" required>
+          </label>
+
+          <label>
+            Email
+            <input type="email" name="email" value="{{ editing_user.email if editing_user else '' }}" required>
+          </label>
+
+          <label class="full">
+            Commentaire
+            <textarea name="comment" rows="4" placeholder="Ajoutez une remarque...">{{ editing_user.comment if editing_user else '' }}</textarea>
+          </label>
+
+          <div class="form-actions full">
+            <button class="btn btn-primary btn-block" type="submit">
+              {{ 'Mettre a jour' if editing_user else 'Ajouter' }}
+            </button>
+          </div>
+        </form>
+      </aside>
+
+      <section class="panel main-panel">
+        <div class="hero-stat">
+          <span>Utilisateurs inscrits</span>
+          <strong>{{ total_users }}</strong>
         </div>
-        <div class="card">
-          <h3>Messages</h3>
-          <p class="big">8</p>
+
+        <div class="panel-head">
+          <div>
+            <p class="section-kicker">Tableau</p>
+            <h2>Liste des utilisateurs</h2>
+          </div>
+          <div class="main-actions">
+            <div class="table-meta">{{ total_users }} enregistrement{{ 's' if total_users != 1 else '' }}</div>
+            <button class="btn btn-primary" type="button" id="openSidebar">Ajouter</button>
+          </div>
         </div>
+
+        <form class="search-bar" method="get" action="{{ url_for('dashboard') }}">
+          <input type="text" name="search" value="{{ search }}" placeholder="Rechercher une donnee...">
+          <button class="btn btn-secondary" type="submit">Rechercher</button>
+          {% if search %}
+            <a class="btn btn-secondary" href="{{ url_for('dashboard') }}">Reinitialiser</a>
+          {% endif %}
+        </form>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Nom</th>
+                <th>Prenom</th>
+                <th>Telephone</th>
+                <th>Email</th>
+                <th>Commentaire</th>
+                <th>Date</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% if users %}
+                {% for user in users %}
+                  <tr>
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.nom }}</td>
+                    <td>{{ user.prenom }}</td>
+                    <td>{{ user.telephone }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.comment or '-' }}</td>
+                    <td>{{ user.date_inscription.strftime('%Y-%m-%d') if user.date_inscription else '-' }}</td>
+                    <td>
+                      <div class="row-actions">
+                        <a class="btn btn-secondary btn-small" href="{{ url_for('dashboard', page=current_page, edit=user.id, search=search) }}">Modifier</a>
+                        <form method="post" action="{{ url_for('delete_user', user_id=user.id) }}" onsubmit="return confirm('Supprimer cette donnee ?');">
+                          <input type="hidden" name="page" value="{{ current_page }}">
+                          <input type="hidden" name="search" value="{{ search }}">
+                          <button class="btn btn-danger btn-small" type="submit">Supprimer</button>
+                        </form>
+                      </div>
+                    </td>
+                  </tr>
+                {% endfor %}
+              {% else %}
+                <tr>
+                  <td colspan="8" class="empty-state">Aucune donnee disponible.</td>
+                </tr>
+              {% endif %}
+            </tbody>
+          </table>
+        </div>
+
+        <nav class="pagination" aria-label="Pagination">
+          <a class="btn btn-secondary {{ 'disabled' if current_page <= 1 else '' }}" href="{{ url_for('dashboard', page=current_page - 1, search=search) if current_page > 1 else '#' }}">Precedent</a>
+          <span>Page {{ current_page }} sur {{ total_pages }}</span>
+          <a class="btn btn-secondary {{ 'disabled' if current_page >= total_pages else '' }}" href="{{ url_for('dashboard', page=current_page + 1, search=search) if current_page < total_pages else '#' }}">Suivant</a>
+        </nav>
       </section>
+    </div>
+  </main>
 
-      <section class="panel">
-        <h2>Dernières inscriptions</h2>
-        <table>
-          <thead>
-            <tr><th>Nom</th><th>Email</th><th>Date</th></tr>
-          </thead>
-          <tbody>
-            <tr><td>Jean Dupont</td><td>jean@example.com</td><td>2026-02-10</td></tr>
-            <tr><td>Marie Durand</td><td>marie@example.com</td><td>2026-02-09</td></tr>
-            <tr><td>Ali K.</td><td>ali@example.com</td><td>2026-02-07</td></tr>
-          </tbody>
-        </table>
-      </section>
-    </main>
-  </div>
+  <footer class="dash-footer">AMPRIC - Dashboard</footer>
+  <script>
+    const sidebar = document.getElementById('sidebarForm');
+    const layout = document.getElementById('dashboardLayout');
+    const openSidebarButton = document.getElementById('openSidebar');
+    const closeSidebarButton = document.getElementById('closeSidebar');
+    const flashMessages = document.querySelectorAll('.success, .error');
 
-  <footer class="dash-footer">© 2026 AMPRIC</footer>
+    if (openSidebarButton && sidebar && layout) {
+      openSidebarButton.addEventListener('click', () => {
+        sidebar.classList.add('is-open');
+        layout.classList.add('with-sidebar');
+      });
+    }
+
+    if (closeSidebarButton && sidebar && layout) {
+      closeSidebarButton.addEventListener('click', () => {
+        sidebar.classList.remove('is-open');
+        layout.classList.remove('with-sidebar');
+      });
+    }
+
+    if (flashMessages.length) {
+      setTimeout(() => {
+        flashMessages.forEach((message) => {
+          message.style.opacity = '0';
+          setTimeout(() => {
+            message.remove();
+          }, 200);
+        });
+      }, 5000);
+    }
+  </script>
 </body>
 </html>

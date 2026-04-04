@@ -93,4 +93,9 @@ h1{
 /* small utility */
 .center{display:flex;align-items:center;justify-content:center}
 
+.goal1{
+    content-visibility: auto;
+    contain-intrinsic-size: 420px;
+}
+
  

@@ -109,3 +109,9 @@ font-family: "Archivo Black", sans-serif;
 .carte_email {
 gap : 20px;
 }
+
+.contact_form,
+.contact_info{
+    content-visibility: auto;
+    contain-intrinsic-size: 700px;
+}
