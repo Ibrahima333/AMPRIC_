@@ -26,6 +26,7 @@
       <p class="intro">Accès réservé à l’administration AMPRIC.</p>
 
       <form method="post" class="login-form">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
         <input type="hidden" name="next" value="{{ next_url }}">
 
         <label>
@@ -40,6 +41,8 @@
 
         <button type="submit" class="submit-btn">Se connecter</button>
       </form>
+
+      <a href="{{ url_for('home') }}" class="back-home-link">Retourner a l'accueil</a>
     </section>
   </main>
 </body>

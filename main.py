@@ -1,10 +1,11 @@
-from flask import Flask ,render_template , request,url_for,redirect,flash,session
+from flask import Flask ,render_template , request,url_for,redirect,flash,session,abort
 from flask_mail import Mail, Message
 import pymysql
 from dotenv import load_dotenv
 import os
 from math import ceil
 from functools import wraps
+import secrets
 
 # Charger les variables d'environnement
 load_dotenv()
@@ -13,6 +14,29 @@ mail = Mail()
 app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY", os.urandom(24))
 
+
+def generate_csrf_token():
+    token = session.get("_csrf_token")
+    if not token:
+        token = secrets.token_urlsafe(32)
+        session["_csrf_token"] = token
+    return token
+
+
+def validate_csrf():
+    session_token = session.get("_csrf_token")
+    form_token = request.form.get("csrf_token", "")
+    if not session_token or not form_token or not secrets.compare_digest(session_token, form_token):
+        abort(400, description="Jeton CSRF invalide ou manquant.")
+
+
+@app.before_request
+def csrf_protect():
+    if request.method == "POST":
+        validate_csrf()
+
+
+app.jinja_env.globals["csrf_token"] = generate_csrf_token
 
 def get_admin_credentials():
     return {
@@ -55,6 +79,16 @@ def configure_mail(app):
     mail.init_app(app)
 
 configure_mail(app) 
+
+
+@app.errorhandler(400)
+def bad_request(error):
+    description = getattr(error, "description", "")
+    if "CSRF" in description:
+        flash("La session du formulaire a expiré ou la requête est invalide. Veuillez réessayer.", "error")
+        return redirect(request.referrer or url_for("home"))
+    return description or "Requête invalide.", 400
+ 
 
 #verification_doublons numero de telephone 
 def check_duplicate_number(tel, exclude_id=None) :
@@ -131,6 +165,11 @@ def objectifs():
 @app.route('/activite')
 def activite():
     return render_template("activite.html")
+
+#route pour la page de dons
+@app.route('/don')
+def don():
+    return render_template("don.html")
 
 
 # route pour la page de contact
@@ -225,7 +264,7 @@ def dashboard():
     search = request.args.get("search", "").strip()
     page = request.args.get("page", 1, type=int)
     page = max(page, 1)
-    per_page = 20
+    per_page = 7
     offset = (page - 1) * per_page
     search_clause = ""
     search_params = []

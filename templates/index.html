@@ -21,8 +21,6 @@
 
         {%endif%}
   {% endwith %}
-    
-
   <div class="container-fluid p-0 section1">
     <div class="section1-slider" aria-hidden="true">
       <div class="section1-slide is-active"></div>
@@ -31,15 +29,22 @@
     <div class="section1-overlay"></div>
     <div class="section1-content">
       <div class="message">
-        "Certains gestes semblent anodins. <strong>Pour moi c'est un défi quotidien.</strong>"
+        "Certains gestes semblent anodins.<strong>Pour moi c'est un défi quotidien.</strong>"
       </div>
-      <button class="button button-popup" onclick="active_popup()">
-          Je suis concerné(e) par la maladie
-      </button>
-      <div class="slider-indicators" aria-label="Indicateurs du slider">
-        <span class="slider-dot is-active"></span>
-        <span class="slider-dot"></span>
-        <span class="slider-dot"></span>
+      <div class="section1-bottom-actions">
+        <div class="hero-buttons">
+          <button class="button button-popup" onclick="active_popup()">
+              Je suis concerné(e) par la maladie
+          </button>
+          <a class="button button-don" href="{{ url_for('don') }}">
+              Faire un don
+          </a>
+        </div>
+        <div class="slider-indicators" aria-label="Indicateurs du slider">
+          <span class="slider-dot is-active"></span>
+          <span class="slider-dot"></span>
+          <span class="slider-dot"></span>
+        </div>
       </div>
     </div>
   </div>
@@ -50,9 +55,10 @@
       <div class="content-popup">
           <button class="close-btn" onclick="active_popup()">x</button>
     
-          <h3>Renseignz vos coordonnées</h3>
+          <h3>Renseignez vos coordonnées</h3>
     
           <form id="form-association" action="{{url_for('home')}}" method="POST">
+               <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                {%if erreur%} <p class="erreur"> {{erreur}}</p> {%endif%}
               <label>Nom </label>
               <input type="text" name="nom" required autocomplete="off" spellcheck="false">
@@ -185,11 +191,26 @@
 
 </div>
 <div class="section6 container-fluid ">
-  <h1> Telecharger le flyer ici </h1>
-  <a class="btn-download" href="{{url_for('static', filename="image/Flyer.pdf")}}"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">
-    <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5"/>
-    <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708z"/>
-  </svg>Telecharger</a>
+  <div class="section6-inner">
+    <p class="section6-kicker">Ressource utile</p>
+    <h1>Découvrir le flyer de l’AMPRIC</h1>
+    <p class="section6-text">
+      Ce document présente l’association, ses missions, ses objectifs et les principaux messages de
+      sensibilisation autour de la polyarthrite rhumatoïde et des rhumatismes inflammatoires chroniques.
+    </p>
+    <div class="section6-points">
+      <span>Présentation de l’association</span>
+      <span>Informations essentielles</span>
+      <span>Support facile à partager</span>
+    </div>
+    <a class="btn-download" href="{{url_for('static', filename="image/Flyer.pdf")}}">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">
+        <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5"/>
+        <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708z"/>
+      </svg>
+      Télécharger le flyer
+    </a>
+  </div>
 </div>
 </body>
   {% endblock %}

@@ -39,7 +39,14 @@ let switchSlide = null;
 let updateDots = null;
 
 const startSlider = () => {
-    if (sliderIntervalId || !section1 || !sliderStage || sliderLayers.length !== 2 || !switchSlide) {
+    if (
+        sliderIntervalId ||
+        !section1 ||
+        !sliderStage ||
+        sliderLayers.length !== 2 ||
+        !switchSlide ||
+        document.hidden
+    ) {
         return;
     }
 
@@ -94,6 +101,14 @@ if (section1 && sliderStage && sliderLayers.length === 2) {
 
     startSlider();
 }
+
+document.addEventListener("visibilitychange", () => {
+    if (document.hidden) {
+        stopSlider();
+    } else {
+        startSlider();
+    }
+});
 
 
 // partie du popup 

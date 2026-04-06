@@ -95,6 +95,20 @@ body {
   cursor: pointer;
 }
 
+.back-home-link {
+  display: inline-flex;
+  margin-top: 18px;
+  color: var(--primary);
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.back-home-link:hover,
+.back-home-link:focus {
+  text-decoration: underline;
+}
+
 .alerts {
   position: fixed;
   top: 100px;

@@ -38,6 +38,7 @@
     <p> Des questions ou des commentaires ?
          Ecrivez-nous simplement un message</p>
     <form action="{{ url_for('contact') }}" method="post" class="contact_form">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
         <input type="text" name="nom" placeholder="Votre nom" required>
         <input type="email" name="email" placeholder="Votre email" required>
         <textarea name="message" placeholder="Votre message" rows="5" required></textarea>
@@ -48,7 +49,7 @@
         <div class="carte">
             <div class="carte_info"> 
                 <h2>Notre adresse</h2>
-                <p>AMPRIC, 123 Rue de la Solidarité</p>
+                <p>Niamana attbougou, Bamako, Mali</p>
              </div>
              <div class="carte_icone">
                <img src="{{url_for('static', filename='/image/icon_adress.png')}}" alt="Icône adresse" width="100" height="100" loading="lazy" decoding="async">

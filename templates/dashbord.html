@@ -13,9 +13,10 @@
         <p class="eyebrow">Administration</p>
         <h1>Tableau de bord AMPRIC</h1>
       </div>
-      <div class="topbar-actions">
-        <div class="user">Gestion des utilisateurs</div>
+        <div class="topbar-actions">
+          <div class="user">Gestion des utilisateurs</div>
         <form method="post" action="{{ url_for('dashboard_logout') }}">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
           <button type="submit" class="btn btn-secondary topbar-btn">Deconnexion</button>
         </form>
       </div>
@@ -55,6 +56,7 @@
           method="post"
           action="{{ url_for('update_user', user_id=editing_user.id) if editing_user else url_for('dashboard') }}"
         >
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
           {% if editing_user %}
             <input type="hidden" name="page" value="{{ current_page }}">
           {% endif %}
@@ -102,7 +104,7 @@
         <div class="panel-head">
           <div>
             <p class="section-kicker">Tableau</p>
-            <h2>Liste des utilisateurs</h2>
+            <h2>Liste des membres</h2>
           </div>
           <div class="main-actions">
             <div class="table-meta">{{ total_users }} enregistrement{{ 's' if total_users != 1 else '' }}</div>
@@ -147,6 +149,7 @@
                       <div class="row-actions">
                         <a class="btn btn-secondary btn-small" href="{{ url_for('dashboard', page=current_page, edit=user.id, search=search) }}">Modifier</a>
                         <form method="post" action="{{ url_for('delete_user', user_id=user.id) }}" onsubmit="return confirm('Supprimer cette donnee ?');">
+                          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                           <input type="hidden" name="page" value="{{ current_page }}">
                           <input type="hidden" name="search" value="{{ search }}">
                           <button class="btn btn-danger btn-small" type="submit">Supprimer</button>
