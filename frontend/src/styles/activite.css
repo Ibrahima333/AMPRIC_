@@ -1,0 +1,124 @@
+:root{
+  --accent: #28a745;
+  --text: #262626;
+  --muted: #555;
+  --surface: #ffffff;
+}
+
+/* Hero d'introduction avec image de fond */
+.activity-hero{
+  margin-top: 60px;
+  min-height: 320px;
+  padding: 48px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: white;
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0.38), rgba(0, 0, 0, 0.38)),
+    url("/image/banner_contact.jpg") center/cover no-repeat;
+}
+
+.activity-hero-inner{
+  max-width: 860px;
+}
+
+/* Petit libellé réutilisé pour les sections */
+.activity-kicker{
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-size: 13px;
+  font-family: "Archivo Black", sans-serif;
+}
+
+.activity-hero h1,
+.highlight-text h2{
+  font-family: "Archivo Black", sans-serif;
+}
+
+.activity-hero h1{
+  margin-bottom: 18px;
+  color: white;
+}
+
+.activity-hero p:last-child{
+  font-size: 18px;
+  line-height: 1.7;
+}
+
+/* Bloc de mise en avant avec image + texte */
+.activity-highlight{
+  padding: 32px 16px 70px;
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+  gap: 34px;
+  align-items: center;
+}
+
+.highlight-media{
+  overflow: hidden;
+  border-radius: 18px;
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.12);
+}
+
+.highlight-media img{
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.highlight-text{
+  color: var(--muted);
+  font-size: 18px;
+}
+
+.highlight-text h2{
+  margin-bottom: 16px;
+  color: var(--text);
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+}
+
+.highlight-text p{
+  line-height: 1.8;
+}
+
+.activity-list{
+  padding-left: 20px;
+  margin: 20px 0 0;
+}
+
+.activity-list li{
+  margin-bottom: 10px;
+}
+
+/* Passage en une colonne sur tablette */
+@media (max-width: 900px){
+  .activity-highlight{
+    grid-template-columns: 1fr;
+  }
+
+  .activity-hero{
+    min-height: 280px;
+    padding: 34px 18px;
+  }
+}
+
+/* Ajustements denses pour mobile */
+@media (max-width: 640px){
+  .activity-hero p:last-child,
+  .highlight-text{
+    font-size: 16px;
+  }
+
+  .activity-highlight{
+    padding: 24px 16px 48px;
+    gap: 24px;
+  }
+
+  .highlight-text h2{
+    font-size: clamp(1.4rem, 6vw, 1.9rem);
+  }
+}

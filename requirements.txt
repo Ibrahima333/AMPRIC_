@@ -1,5 +1,0 @@
-Flask
-Flask-Mail
-PyMySQL
-python-dotenv
-gunicorn
