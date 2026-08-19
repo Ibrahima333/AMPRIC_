@@ -13,6 +13,7 @@ class Settings(BaseSettings):
     ENV: str = "development"
 
     DB_HOST: str
+    DB_PORT: int = 5432
     DB_USER: str
     DB_PASSWORD: str
     DB_NAME: str

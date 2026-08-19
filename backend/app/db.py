@@ -1,19 +1,19 @@
 from contextlib import contextmanager
 
-import pymysql
-import pymysql.cursors
+import psycopg2
+import psycopg2.extras
 
 from .config import settings
 
 
 def get_connection():
-    return pymysql.connect(
+    return psycopg2.connect(
         host=settings.DB_HOST,
+        port=settings.DB_PORT,
         user=settings.DB_USER,
         password=settings.DB_PASSWORD,
-        database=settings.DB_NAME,
-        cursorclass=pymysql.cursors.DictCursor,
-        charset="utf8mb4",
+        dbname=settings.DB_NAME,
+        cursor_factory=psycopg2.extras.RealDictCursor,
     )
 
 

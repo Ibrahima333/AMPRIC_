@@ -229,12 +229,15 @@ export default function Home() {
 
             <Reveal as="figure" className="section3-media" delay={120} aria-hidden="false">
               <div className="tiktok-embed-wrap">
-                <iframe
-                  src="https://www.tiktok.com/embed/v2/7611676038380211476"
-                  title="Vidéo TikTok de Diaminatou Camara, présidente de l'AMPRIC"
-                  allow="autoplay; encrypted-media; fullscreen"
-                  allowFullScreen
-                  loading="lazy"
+                <video
+                  src="/video/presidente-tiktok.mp4"
+                  title="Vidéo de Diaminatou Camara, présidente de l'AMPRIC"
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  controls
+                  preload="auto"
                 />
               </div>
               <figcaption className="media-caption">Diaminatou Camara — Présidente</figcaption>

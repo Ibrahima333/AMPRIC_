@@ -50,11 +50,11 @@ def list_users(search: str = "", page: int = Query(default=1, ge=1), edit: int |
 
     if search:
         search_clause = """
-            WHERE nom LIKE %s
-            OR prenom LIKE %s
-            OR telephone LIKE %s
-            OR email LIKE %s
-            OR comment LIKE %s
+            WHERE nom ILIKE %s
+            OR prenom ILIKE %s
+            OR telephone ILIKE %s
+            OR email ILIKE %s
+            OR comment ILIKE %s
         """
         search_value = f"%{search}%"
         search_params = [search_value] * 5
