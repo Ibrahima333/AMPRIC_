@@ -1,0 +1,8 @@
+fastapi
+uvicorn[standard]
+pydantic-settings
+email-validator
+pymysql
+python-dotenv
+itsdangerous
+gunicorn
