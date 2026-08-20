@@ -104,11 +104,13 @@ export default function Don() {
 
           <div className="mobile-money-grid">
             <div className="mobile-money-item orange-money">
+              <img src="/image/orange-money-logo.svg" alt="Orange Money" className="mobile-money-logo" loading="lazy" decoding="async" />
               <span>Orange Money</span>
               <p>+223 73 24 40 61</p>
             </div>
 
             <div className="mobile-money-item wave-money">
+              <img src="/image/wave-logo.jpg" alt="Wave" className="mobile-money-logo mobile-money-logo-round" loading="lazy" decoding="async" />
               <span>Wave</span>
               <p>+223 66 91 99 05</p>
             </div>

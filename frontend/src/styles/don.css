@@ -205,6 +205,27 @@
   color: white;
 }
 
+.mobile-money-logo{
+  display: block;
+  height: 34px;
+  width: auto;
+  max-width: 140px;
+  margin-bottom: 14px;
+  padding: 6px 10px;
+  border-radius: 10px;
+  background: #ffffff;
+  object-fit: contain;
+}
+
+.mobile-money-logo-round{
+  height: 48px;
+  width: 48px;
+  padding: 0;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(255, 255, 255, 0.7);
+}
+
 .mobile-money-item span{
   display: block;
   margin-bottom: 10px;
