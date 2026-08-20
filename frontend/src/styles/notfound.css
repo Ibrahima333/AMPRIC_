@@ -1,0 +1,61 @@
+.notfound-hero {
+  margin-top: 60px;
+  min-height: calc(100vh - 60px);
+  padding: 48px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: white;
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url("/image/banner_contact.jpg") center/cover no-repeat;
+}
+
+.notfound-inner {
+  max-width: 640px;
+}
+
+.notfound-kicker {
+  margin: 0 0 12px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-size: 13px;
+  font-weight: 700;
+  color: rgb(136, 234, 8);
+  font-family: "Archivo Black", sans-serif;
+}
+
+.notfound-hero h1 {
+  margin-bottom: 18px;
+  font-size: clamp(2.2rem, 6vw, 3.2rem);
+  color: white;
+  font-family: "Archivo Black", sans-serif;
+}
+
+.notfound-hero p {
+  font-size: 18px;
+  line-height: 1.7;
+}
+
+.notfound-actions {
+  margin-top: 28px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  justify-content: center;
+}
+
+.notfound-actions .button {
+  position: static;
+}
+
+@media (max-width: 640px) {
+  .notfound-hero {
+    padding: 34px 18px;
+  }
+
+  .notfound-hero p {
+    font-size: 16px;
+  }
+}

@@ -7,6 +7,7 @@ import Don from "./pages/Don";
 import Contact from "./pages/Contact";
 import AdminLogin from "./pages/AdminLogin";
 import Dashboard from "./pages/Dashboard";
+import NotFound from "./pages/NotFound";
 import "./styles/main.css";
 
 export default function App() {
@@ -18,6 +19,7 @@ export default function App() {
         <Route path="/activite" element={<Activite />} />
         <Route path="/don" element={<Don />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="*" element={<NotFound />} />
       </Route>
       <Route path="/admin/login" element={<AdminLogin />} />
       <Route path="/dashboard" element={<Dashboard />} />
