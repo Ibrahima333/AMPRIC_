@@ -116,7 +116,7 @@ export default function Dashboard() {
   const { users, total_users: totalUsers, current_page: currentPage, total_pages: totalPages } = listing;
 
   return (
-    <>
+    <div className="dashboard-page">
       <header className="topbar">
         <div className="tb-inner">
           <div>
@@ -125,6 +125,7 @@ export default function Dashboard() {
           </div>
           <div className="topbar-actions">
             <div className="user">Gestion des utilisateurs</div>
+            <button className="btn btn-secondary topbar-btn" type="button" onClick={() => navigate("/")}>Accueil</button>
             <button className="btn btn-secondary topbar-btn" onClick={handleLogout}>Deconnexion</button>
           </div>
         </div>
@@ -279,6 +280,6 @@ export default function Dashboard() {
       </main>
 
       <footer className="dash-footer">AMPRIC - Dashboard</footer>
-    </>
+    </div>
   );
 }

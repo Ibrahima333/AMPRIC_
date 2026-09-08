@@ -73,6 +73,7 @@
 .highlight-text{
   color: var(--muted);
   font-size: 18px;
+  scroll-margin-top: 120px;
 }
 
 .highlight-text h2{

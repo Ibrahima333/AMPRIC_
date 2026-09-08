@@ -15,18 +15,21 @@ const RECENT_ACTIONS = [
     badge: "Rencontre",
     title: "À la rencontre des malades et des membres",
     text: "Le 14 juin 2026, l'AMPRIC a réuni malades et membres de l'association pour un temps d'échange, d'écoute et d'orientation.",
+    target: "rencontre-malades",
   },
   {
     image: "/image/a4.JPG",
     badge: "Sensibilisation",
     title: "Des campagnes qui font bouger les lignes",
     text: "Actions de terrain pour informer le grand public sur la polyarthrite rhumatoïde et ses impacts au quotidien.",
+    target: "actions-terrain",
   },
   {
     image: "/image/a1.jpg",
     badge: "Rencontre",
     title: "Échange avec la marraine de l'association",
     text: "Un moment fort de dialogue et de partage autour des missions de l'AMPRIC.",
+    target: "rencontre-marraine",
   },
 ];
 
@@ -301,7 +304,7 @@ export default function Home() {
             {RECENT_ACTIONS.map((action, i) => (
               <Reveal
                 as={Link}
-                to="/activite"
+                to={`/activite#${action.target}`}
                 className="action-recent-card"
                 delay={i * 100}
                 key={action.title}

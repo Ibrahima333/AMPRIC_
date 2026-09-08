@@ -1,7 +1,21 @@
+import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import "../styles/activite.css";
 import Reveal from "../components/Reveal";
 
 export default function Activite() {
+  const { hash } = useLocation();
+
+  useEffect(() => {
+    if (!hash) return undefined;
+
+    const frame = window.requestAnimationFrame(() => {
+      document.getElementById(hash.slice(1))?.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+
+    return () => window.cancelAnimationFrame(frame);
+  }, [hash]);
+
   return (
     <>
       <section className="activity-hero container-fluid">
@@ -18,7 +32,7 @@ export default function Activite() {
         <Reveal as="div" className="highlight-media">
           <img src="/image/a4.JPG" alt="Activités de sensibilisation de l'AMPRIC" width="720" height="520" loading="lazy" decoding="async" />
         </Reveal>
-        <Reveal as="div" className="highlight-text" delay={120}>
+        <Reveal as="div" id="actions-terrain" className="highlight-text" delay={120}>
           <p className="activity-kicker">Actions sur le terrain</p>
           <h2>Des initiatives proches des besoins réels</h2>
           <p>
@@ -31,7 +45,7 @@ export default function Activite() {
         <Reveal as="div" className="highlight-media">
           <img src="/image/a1.jpg" alt="Activités de sensibilisation de l'AMPRIC" width="720" height="520" loading="lazy" decoding="async" />
         </Reveal>
-        <Reveal as="div" className="highlight-text" delay={120}>
+        <Reveal as="div" id="rencontre-marraine" className="highlight-text" delay={120}>
           <p className="activity-kicker">Rencontre institutionnelle</p>
           <h2>Échange avec la marraine de l'association</h2>
           <p>
@@ -44,7 +58,7 @@ export default function Activite() {
         <Reveal as="div" className="highlight-media">
           <img src="/image/c1.jpg" alt="Rencontre entre les malades et les membres de l'AMPRIC" width="720" height="520" loading="lazy" decoding="async" />
         </Reveal>
-        <Reveal as="div" className="highlight-text" delay={120}>
+        <Reveal as="div" id="rencontre-malades" className="highlight-text" delay={120}>
           <p className="activity-kicker">Rencontre du 14 juin 2026</p>
           <h2>À la rencontre des malades et des membres</h2>
           <p>
