@@ -1,11 +1,14 @@
+import logging
+
 from fastapi import APIRouter, Request, Response
 
 from ..db import check_duplicate_email, check_duplicate_number, db_cursor
-from ..mail import send_contact_mail
+from ..mail import send_contact_mail, send_new_registration_mail
 from ..schemas import ContactIn, InterestIn
 from ..security import CsrfDep, ensure_csrf_cookie
 
 router = APIRouter(prefix="/api", tags=["public"])
+logger = logging.getLogger(__name__)
 
 
 @router.get("/csrf")
@@ -27,6 +30,18 @@ def create_interest(payload: InterestIn):
             "insert into utilisateurs (nom,prenom,telephone,email,comment) values(%s,%s,%s,%s,%s)",
             (payload.nom, payload.prenom, payload.tel, payload.email, payload.comment),
         )
+
+    try:
+        send_new_registration_mail(
+            nom=payload.nom,
+            prenom=payload.prenom,
+            telephone=payload.tel,
+            email=str(payload.email),
+            comment=payload.comment,
+        )
+    except Exception:
+        # The registration is already saved; an e-mail outage must not make the form fail.
+        logger.exception("Impossible d'envoyer la notification de nouvelle inscription.")
 
     return {
         "ok": True,
