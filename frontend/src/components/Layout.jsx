@@ -22,6 +22,22 @@ export default function Layout() {
   }`;
   const logoClass = `logo ${scrolled ? "logo-lg" : "logo-sn"}`;
 
+  const closeMobileMenu = () => {
+    if (!window.matchMedia("(max-width: 900px)").matches) return;
+
+    const menu = document.getElementById("navbarNav");
+    if (!menu?.classList.contains("show")) return;
+
+    const Collapse = window.bootstrap?.Collapse;
+    if (Collapse) {
+      Collapse.getOrCreateInstance(menu).hide();
+      return;
+    }
+
+    menu.classList.remove("show");
+    document.querySelector(".navbar-toggler")?.setAttribute("aria-expanded", "false");
+  };
+
   return (
     <>
       <nav className={navClass}>
@@ -50,7 +66,7 @@ export default function Layout() {
           </button>
 
           <div className="collapse navbar-collapse justify-content-end mw-100" id="navbarNav">
-            <ul className="navbar-nav elements w-50 justify-content-evenly">
+            <ul className="navbar-nav elements w-50 justify-content-evenly" onClick={closeMobileMenu}>
               <li className="nav-item">
                 <NavLink className="nav-link" to="/">Accueil</NavLink>
               </li>
