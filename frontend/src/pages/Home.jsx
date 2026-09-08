@@ -6,7 +6,7 @@ import Reveal from "../components/Reveal";
 import StatsCounter from "../components/StatsCounter";
 import Testimonials from "../components/Testimonials";
 
-const SLIDER_IMAGES = ["/image/img1.jpeg", "/image/img4.jpg", "/image/img6.jpg"];
+const SLIDER_IMAGES = ["/image/img1.webp", "/image/img4.webp", "/image/img6.webp"];
 const PHONE_REGEX = /^[789]\d{7}$/;
 
 const RECENT_ACTIONS = [
@@ -44,6 +44,11 @@ function useHeroSlider(paused) {
     if (layerRefs[0].current) {
       layerRefs[0].current.style.backgroundImage = `url(${SLIDER_IMAGES[0]})`;
     }
+
+    SLIDER_IMAGES.slice(1).forEach((src) => {
+      const image = new Image();
+      image.src = src;
+    });
   }, []);
 
   useEffect(() => {
