@@ -88,8 +88,8 @@ export default function Activite() {
           <figure className="launch-article-portrait">
             <div className="launch-article-photo-frame">
               <img
-                src="/image/aisha.jpg"
-                alt="Aïsha, maîtresse de cérémonie du lancement de l’AMPRIC"
+                src="/image/aissata-keita.jpg"
+                alt="Aïssata Keita, maîtresse de cérémonie du lancement de l’AMPRIC"
                 width="1800"
                 height="1789"
                 loading="lazy"
@@ -97,7 +97,7 @@ export default function Activite() {
               />
             </div>
             <figcaption>
-              <strong>Aïsha</strong>
+              <strong>Aïssata Keita</strong>
               <span>Maîtresse de cérémonie et secrétaire générale de l’AMPRIC</span>
             </figcaption>
           </figure>
