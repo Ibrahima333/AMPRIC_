@@ -11,6 +11,13 @@ const PHONE_REGEX = /^[789]\d{7}$/;
 
 const RECENT_ACTIONS = [
   {
+    image: "/image/lancement-ampric-0949.jpg",
+    badge: "12 octobre 2026",
+    title: "Lancement officiel de l’AMPRIC",
+    text: "À l’Université Scientifique Libre de Bamako, patients, professionnels de santé et partenaires se sont mobilisés pour mieux comprendre les maladies rhumatismales et porter un message d’espoir.",
+    target: "lancement-ampric",
+  },
+  {
     image: "/image/c2.jpeg",
     badge: "Rencontre",
     title: "À la rencontre des malades et des membres",
