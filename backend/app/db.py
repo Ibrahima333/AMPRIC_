@@ -2,6 +2,7 @@ from contextlib import contextmanager
 
 import psycopg2
 import psycopg2.extras
+from fastapi import HTTPException
 
 from .config import settings
 
@@ -14,20 +15,30 @@ def get_connection():
         password=settings.DB_PASSWORD,
         dbname=settings.DB_NAME,
         cursor_factory=psycopg2.extras.RealDictCursor,
+        connect_timeout=5,
     )
 
 
 @contextmanager
 def db_cursor(commit: bool = False):
-    connexion = get_connection()
+    connexion = None
+    cursor = None
     try:
+        connexion = get_connection()
         cursor = connexion.cursor()
         yield cursor
         if commit:
             connexion.commit()
+    except (psycopg2.OperationalError, psycopg2.InterfaceError) as exc:
+        raise HTTPException(
+            status_code=503,
+            detail="La base ne répond pas. Rechargez la page dans un instant.",
+        ) from exc
     finally:
-        cursor.close()
-        connexion.close()
+        if cursor is not None:
+            cursor.close()
+        if connexion is not None:
+            connexion.close()
 
 
 def check_duplicate_number(tel: str, exclude_id: int | None = None) -> bool:

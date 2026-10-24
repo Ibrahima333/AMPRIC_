@@ -77,7 +77,7 @@ export default function Contact() {
         <Reveal as="div" className="carte" delay={100}>
           <div className="carte_info">
             <h2>Numéro de téléphone</h2>
-            <p>+223 782306178</p>
+            <p>+223 66 91 99 05</p>
           </div>
           <div className="carte_icone">
             <img src="/image/icon_phone.png" alt="Icône téléphone" width="100" height="100" loading="lazy" decoding="async" />

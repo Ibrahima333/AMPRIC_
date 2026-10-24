@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { apiFetch, ensureCsrf } from "../api/client";
 import FlashBanner from "../components/FlashBanner";
@@ -15,19 +15,28 @@ export default function Dashboard() {
   const editId = searchParams.get("edit");
 
   const [listing, setListing] = useState(null);
+  const [loadError, setLoadError] = useState("");
   const [flash, setFlash] = useState(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [form, setForm] = useState(emptyForm);
   const [searchInput, setSearchInput] = useState(search);
+  const loadRequestRef = useRef({ key: null, id: 0 });
 
   const loadUsers = useCallback(async () => {
     const params = new URLSearchParams({ page: String(page) });
     if (search) params.set("search", search);
     if (editId) params.set("edit", editId);
+    const requestPath = `/api/admin/users?${params.toString()}`;
+
+    if (loadRequestRef.current.key === requestPath) return;
+    const requestId = loadRequestRef.current.id + 1;
+    loadRequestRef.current = { key: requestPath, id: requestId };
 
     try {
-      const data = await apiFetch(`/api/admin/users?${params.toString()}`);
+      const data = await apiFetch(requestPath);
+      if (loadRequestRef.current.id !== requestId) return;
       setListing(data);
+      setLoadError("");
       if (data.editing_user) {
         setForm(data.editing_user);
         setSidebarOpen(true);
@@ -35,8 +44,22 @@ export default function Dashboard() {
         setSidebarOpen(false);
         setForm(emptyForm);
       }
-    } catch {
-      navigate(`/admin/login?next=/dashboard`, { replace: true });
+    } catch (error) {
+      if (loadRequestRef.current.id !== requestId) return;
+      if (error.status === 401) {
+        navigate(`/admin/login?next=/dashboard`, { replace: true });
+        return;
+      }
+
+      setLoadError(error.status === 503
+        ? error.message
+        : error.status
+          ? "Le serveur ne peut pas charger les données pour le moment. Réessayez dans quelques instants."
+          : "Impossible de joindre le serveur. Vérifiez votre connexion puis réessayez.");
+    } finally {
+      if (loadRequestRef.current.id === requestId) {
+        loadRequestRef.current = { ...loadRequestRef.current, key: null };
+      }
     }
   }, [page, search, editId, navigate]);
 
@@ -111,7 +134,20 @@ export default function Dashboard() {
     navigate("/admin/login");
   };
 
-  if (!listing) return null;
+  if (!listing) {
+    return (
+      <main className="dashboard-load-state" aria-live="polite">
+        {loadError ? (
+          <div className="dashboard-load-error" role="alert">
+            <h1>Impossible de charger le dashboard</h1>
+            <p>{loadError}</p>
+          </div>
+        ) : (
+          <p>Chargement du dashboard…</p>
+        )}
+      </main>
+    );
+  }
 
   const { users, total_users: totalUsers, current_page: currentPage, total_pages: totalPages } = listing;
 
@@ -133,6 +169,11 @@ export default function Dashboard() {
 
       <main className="page">
         <FlashBanner category={flash?.category} message={flash?.message} onDone={() => setFlash(null)} />
+        {loadError && (
+          <div className="dashboard-load-error dashboard-load-error-inline" role="alert">
+            <p>{loadError}</p>
+          </div>
+        )}
 
         <div className={`dashboard-layout ${sidebarOpen ? "with-sidebar" : ""}`}>
           <aside className={`sidebar panel ${sidebarOpen ? "is-open" : ""}`}>
