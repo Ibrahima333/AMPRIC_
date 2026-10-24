@@ -191,11 +191,12 @@ body {
   font-weight: 800;
   letter-spacing: 0.03em;
   cursor: pointer;
-  transition: opacity 0.15s ease;
+  transition: background-color 0.15s ease, color 0.15s ease;
 }
 
 .login-submit-btn:hover:not(:disabled) {
-  opacity: 0.9;
+  background: #426d55;
+  color: #fff;
 }
 
 .login-submit-btn:disabled {
